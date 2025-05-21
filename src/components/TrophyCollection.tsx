@@ -13,7 +13,10 @@ const TrophyCollection = ({ trophies }: TrophyCollectionProps) => {
       <h3 className="font-semibold text-lg mb-3">Trophies</h3>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
         {trophies.map((trophy) => (
-          <div key={trophy.id} className="badge-card">
+          <div 
+            key={trophy.id} 
+            className={`badge-card ${trophy.earned ? "bg-green-50 border border-green-100" : "bg-gray-100"}`}
+          >
             <div className="badge-icon">
               <img src={trophy.icon} alt={trophy.name} className="w-7 h-7" />
             </div>
