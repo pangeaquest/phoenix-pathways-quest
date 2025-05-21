@@ -2,11 +2,10 @@
 import { useState } from "react";
 import XPBar from "@/components/XPBar";
 import StreakTracker from "@/components/StreakTracker";
-import BadgeCollection from "@/components/BadgeCollection";
+import TrophyCollection from "@/components/TrophyCollection";
 import RewardsSection from "@/components/RewardsSection";
-import Navigation from "@/components/Navigation";
 import Header from "@/components/Header";
-import { mockUser, mockBadges, mockRewards } from "@/data/mockData";
+import { mockUser, mockTrophies, mockRewards } from "@/data/mockData";
 import { Toaster } from "sonner";
 
 const Index = () => {
@@ -34,12 +33,10 @@ const Index = () => {
             onXPIncrease={handleXPIncrease} 
           />
           <StreakTracker streakCount={user.streak} />
-          <BadgeCollection badges={mockBadges} />
+          <TrophyCollection trophies={mockTrophies} />
           <RewardsSection rewards={mockRewards} />
         </div>
       </div>
-      
-      <Navigation />
     </div>
   );
 };

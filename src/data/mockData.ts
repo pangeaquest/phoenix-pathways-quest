@@ -1,6 +1,6 @@
 
 import { User } from "@/types/user";
-import { Badge } from "@/types/badge";
+import { Trophy } from "@/types/trophy";
 import { Reward } from "@/types/reward";
 
 export const mockUser: User = {
@@ -12,7 +12,7 @@ export const mockUser: User = {
   streak: 5
 };
 
-export const mockBadges: Badge[] = [
+export const mockTrophies: Trophy[] = [
   {
     id: "1",
     name: "Early Bird",

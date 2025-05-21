@@ -1,15 +1,13 @@
 
 import { Reward } from "@/types/reward";
 import { Button } from "@/components/ui/button";
-import { useNavigate } from "react-router-dom";
+import { Award } from "lucide-react";
 
 interface RewardsSectionProps {
   rewards: Reward[];
 }
 
 const RewardsSection = ({ rewards }: RewardsSectionProps) => {
-  const navigate = useNavigate();
-
   return (
     <div>
       <h3 className="font-semibold text-lg mb-3">Rewards</h3>
@@ -17,15 +15,21 @@ const RewardsSection = ({ rewards }: RewardsSectionProps) => {
         {rewards.map((reward) => (
           <div 
             key={reward.id} 
-            className="bg-phoenix-100 p-4 rounded-xl flex justify-between items-center"
+            className={`p-4 rounded-xl flex justify-between items-center ${
+              reward.redeemed 
+                ? "bg-green-100 border border-green-200" 
+                : "bg-amber-100 border border-amber-200"
+            }`}
           >
-            <span className="font-medium text-phoenix-800">{reward.name}</span>
+            <span className={`font-medium ${reward.redeemed ? "text-green-800" : "text-amber-800"}`}>
+              {reward.name}
+            </span>
             {reward.redeemed ? (
-              <div className="bg-phoenix-800 text-white px-3 py-1 rounded-xl text-sm">
-                Redeemed
+              <div className="bg-green-600 text-white px-3 py-1 rounded-xl text-sm">
+                Completed
               </div>
             ) : (
-              <div className="bg-phoenix-700 text-white px-3 py-1 rounded-xl text-sm">
+              <div className="bg-amber-600 text-white px-3 py-1 rounded-xl text-sm">
                 {reward.cost} XP
               </div>
             )}
@@ -33,9 +37,9 @@ const RewardsSection = ({ rewards }: RewardsSectionProps) => {
         ))}
       </div>
       <Button 
-        className="redeem-button mt-5"
-        onClick={() => navigate("/rewards")}
+        className="w-full bg-red-900 hover:bg-red-800 mt-4 flex items-center gap-2"
       >
+        <Award size={18} />
         Redeem Rewards
       </Button>
     </div>
