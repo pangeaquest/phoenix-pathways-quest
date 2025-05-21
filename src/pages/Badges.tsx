@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { mockBadges } from "@/data/mockData";
 import Navigation from "@/components/Navigation";
