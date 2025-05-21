@@ -4,6 +4,7 @@ import { mockUser, mockRewards } from "@/data/mockData";
 import Navigation from "@/components/Navigation";
 import { Reward } from "@/types/reward";
 import { Button } from "@/components/ui/button";
+import { Progress } from "@/components/ui/progress";
 import { 
   AlertDialog,
   AlertDialogContent,
@@ -14,8 +15,10 @@ import {
   AlertDialogCancel,
   AlertDialogAction,
 } from "@/components/ui/alert-dialog";
+import { Flame } from "lucide-react";
 import { toast } from "sonner";
 import { Toaster } from "sonner";
+import StreakTracker from "@/components/StreakTracker";
 
 const Rewards = () => {
   const [user] = useState(mockUser);
@@ -50,52 +53,93 @@ const Rewards = () => {
     <div className="min-h-screen bg-gray-50 pb-20">
       <Toaster position="top-center" />
       <div className="max-w-md mx-auto p-4">
-        <h1 className="text-2xl font-bold mb-6">Rewards Shop</h1>
+        <div className="flex items-center gap-2 mb-6">
+          <img 
+            src="/lovable-uploads/7599e26f-2f04-4b42-9bab-933e2a3ddcb4.png" 
+            alt="Party Popper" 
+            className="w-8 h-8" 
+          />
+          <h1 className="text-2xl font-bold">Rewards Dashboard</h1>
+        </div>
         
-        <div className="bg-white rounded-2xl shadow-sm p-6 mb-4">
-          <div className="flex items-center justify-between mb-6">
-            <h2 className="font-semibold">Your XP Balance</h2>
-            <div className="text-lg font-bold text-phoenix-800">{user.xp} XP</div>
+        <div className="bg-white rounded-xl shadow-sm p-6 mb-4">
+          <h2 className="text-xl font-bold mb-3">XP Progress</h2>
+          
+          <div className="flex items-center gap-4 mb-6">
+            <div className="w-16 h-16 rounded-full bg-red-900 flex items-center justify-center text-white font-bold">
+              XP
+            </div>
+            
+            <div className="flex-1">
+              <div className="text-red-900 font-semibold mb-1">
+                {user.xp}/{user.maxXp}
+              </div>
+              <Progress 
+                value={(user.xp / user.maxXp) * 100} 
+                className="h-6 bg-red-100"
+              >
+                <div 
+                  className="h-full bg-red-900 flex items-center justify-end pr-2 text-xs text-white"
+                  style={{ width: `${(user.xp / user.maxXp) * 100}%` }}
+                >
+                  {user.xp}/{user.maxXp}
+                </div>
+              </Progress>
+            </div>
           </div>
           
-          <h3 className="font-medium text-lg mb-4">Available Rewards</h3>
+          <div className="mb-6 bg-white rounded-xl p-4 shadow-sm">
+            <div className="flex items-center gap-2">
+              <Flame className="text-orange-500" size={20} />
+              <span className="font-semibold">{user.streak} Week Streak</span>
+            </div>
+          </div>
           
-          <div className="space-y-4">
-            {rewards.map((reward) => (
-              <div 
-                key={reward.id} 
-                className={`p-4 rounded-xl ${
-                  reward.redeemed 
-                    ? "bg-gray-100" 
-                    : "bg-phoenix-50 border border-phoenix-100"
-                }`}
-              >
-                <div className="flex justify-between items-center">
-                  <h4 className="font-medium">{reward.name}</h4>
+          <div className="mb-6">
+            <h3 className="font-bold text-xl mb-3">Badges</h3>
+            <div className="grid grid-cols-2 gap-3">
+              {mockRewards.map((reward) => (
+                <div key={reward.id} className="bg-gray-50 p-3 rounded-xl shadow-sm">
+                  <div className="flex items-center gap-3">
+                    <div className="w-12 h-12 bg-white rounded-full flex items-center justify-center shadow-inner">
+                      <img 
+                        src="https://img.icons8.com/fluency/48/alarm-clock.png" 
+                        alt={reward.name} 
+                        className="w-6 h-6" 
+                      />
+                    </div>
+                    <div>
+                      <div className="font-medium">{reward.name}</div>
+                      <div className="text-xs text-gray-600">{reward.description}</div>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+          
+          <div>
+            <h3 className="font-bold text-xl mb-3">Rewards</h3>
+            <div className="space-y-4">
+              {rewards.map((reward) => (
+                <div key={reward.id} className="flex justify-between items-center">
+                  <div className="font-semibold">${reward.cost/100} Starbucks Gift Card</div>
                   {reward.redeemed ? (
-                    <span className="text-xs px-3 py-1 bg-phoenix-800 text-white rounded-full">
+                    <span className="bg-red-900 text-white px-3 py-1 rounded-md text-sm">
                       Redeemed
                     </span>
                   ) : (
-                    <span className="text-sm font-semibold text-phoenix-800">
-                      {reward.cost} XP
-                    </span>
+                    <Button 
+                      className="bg-red-900 hover:bg-red-800"
+                      onClick={() => handleRedeemClick(reward)}
+                      disabled={user.xp < reward.cost}
+                    >
+                      Redeem
+                    </Button>
                   )}
                 </div>
-                
-                <p className="text-sm text-gray-600 mt-1">{reward.description}</p>
-                
-                {!reward.redeemed && (
-                  <Button 
-                    className="mt-3 w-full bg-phoenix-800 hover:bg-phoenix-700"
-                    disabled={user.xp < reward.cost}
-                    onClick={() => handleRedeemClick(reward)}
-                  >
-                    {user.xp >= reward.cost ? "Redeem Now" : "Not Enough XP"}
-                  </Button>
-                )}
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
         </div>
       </div>
@@ -113,7 +157,7 @@ const Rewards = () => {
             <AlertDialogCancel>Cancel</AlertDialogCancel>
             <AlertDialogAction 
               onClick={handleRedeem}
-              className="bg-phoenix-800 hover:bg-phoenix-700"
+              className="bg-red-900 hover:bg-red-800"
             >
               Yes, Redeem
             </AlertDialogAction>

@@ -1,5 +1,5 @@
 
-import { Trophy } from "lucide-react";
+import { Flame } from "lucide-react";
 
 interface StreakTrackerProps {
   streakCount: number;
@@ -7,9 +7,9 @@ interface StreakTrackerProps {
 
 const StreakTracker = ({ streakCount }: StreakTrackerProps) => {
   return (
-    <div className="streak-badge mb-6">
-      <Trophy className="text-orange-500" size={20} />
-      <span>{streakCount} {streakCount === 1 ? 'Week' : 'Week'} Streak</span>
+    <div className="bg-white rounded-xl p-4 shadow-sm flex items-center gap-2">
+      <Flame className="text-orange-500" size={20} />
+      <span className="font-semibold">{streakCount} Week Streak</span>
     </div>
   );
 };
