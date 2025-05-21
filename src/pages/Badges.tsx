@@ -2,11 +2,14 @@
 import { useState } from "react";
 import { mockBadges } from "@/data/mockData";
 import Navigation from "@/components/Navigation";
-import { Badge } from "@/types/badge";
+import { Badge as BadgeType } from "@/types/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Button } from "@/components/ui/button";
+import { ArrowRight, BookOpen } from "lucide-react";
+import { Link } from "react-router-dom";
 
 const Badges = () => {
-  const [badges] = useState<Badge[]>(mockBadges);
+  const [badges] = useState<BadgeType[]>(mockBadges);
 
   const allBadgeTypes = [
     { title: "Academics", 
@@ -16,9 +19,11 @@ const Badges = () => {
           name: "Perfect Score",
           description: "Achieved 100% on an assignment",
           icon: "https://img.icons8.com/fluency/48/checkmark--v1.png", 
-          earned: false
+          earned: false,
+          courseRequired: "Introduction to Business",
+          activityRequired: "Final Project"
         },
-        ...badges.filter(b => b.id === "1")
+        ...badges.filter(b => b.id === "1"),
       ]
     },
     { title: "Community", 
@@ -29,7 +34,9 @@ const Badges = () => {
           name: "Forum Legend",
           description: "Created 10+ forum posts with responses",
           icon: "https://img.icons8.com/fluency/48/comments.png", 
-          earned: false
+          earned: false,
+          courseRequired: "Marketing Fundamentals",
+          activityRequired: "Group Project"
         }
       ]
     },
@@ -41,7 +48,9 @@ const Badges = () => {
           name: "Goal Getter",
           description: "Completed all your weekly objectives",
           icon: "https://img.icons8.com/fluency/48/bullseye.png", 
-          earned: false
+          earned: false,
+          courseRequired: "Data Analysis",
+          activityRequired: "Data Visualization Exercise"
         }
       ]
     }
@@ -55,7 +64,7 @@ const Badges = () => {
         <div className="bg-white rounded-2xl shadow-sm p-6 mb-4">
           <div className="flex items-center justify-between mb-6">
             <h2 className="font-semibold">Progress</h2>
-            <div className="text-sm text-phoenix-800 font-medium">
+            <div className="text-sm text-red-900 font-medium">
               {badges.filter(b => b.earned).length}/{allBadgeTypes.flat().length} Earned
             </div>
           </div>
@@ -75,8 +84,8 @@ const Badges = () => {
                       key={badge.id} 
                       className={`p-4 rounded-xl flex items-center gap-3 ${
                         badge.earned 
-                          ? "bg-phoenix-50 border border-phoenix-100" 
-                          : "bg-gray-100 opacity-60"
+                          ? "bg-red-50 border border-red-100" 
+                          : "bg-gray-100 opacity-80"
                       }`}
                     >
                       <div className="badge-icon">
@@ -85,6 +94,15 @@ const Badges = () => {
                       <div className="flex-1">
                         <div className="font-medium">{badge.name}</div>
                         <div className="text-gray-600 text-xs">{badge.description}</div>
+                        
+                        {badge.courseRequired && (
+                          <div className="mt-1 flex items-center">
+                            <BookOpen size={12} className="text-red-900 mr-1" />
+                            <span className="text-xs text-gray-600">
+                              Earn in: {badge.courseRequired}
+                            </span>
+                          </div>
+                        )}
                       </div>
                       {badge.earned ? (
                         <div className="text-xs px-2 py-1 bg-green-100 text-green-700 rounded-full">
@@ -97,6 +115,14 @@ const Badges = () => {
                       )}
                     </div>
                   ))}
+                </div>
+                
+                <div className="mt-6">
+                  <Link to="/courses">
+                    <Button className="w-full bg-red-900 hover:bg-red-800">
+                      Go to courses to earn badges <ArrowRight size={16} className="ml-2" />
+                    </Button>
+                  </Link>
                 </div>
               </TabsContent>
             ))}

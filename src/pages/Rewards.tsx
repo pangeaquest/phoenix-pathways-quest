@@ -15,10 +15,11 @@ import {
   AlertDialogCancel,
   AlertDialogAction,
 } from "@/components/ui/alert-dialog";
-import { Flame } from "lucide-react";
+import { Flame, ArrowRight } from "lucide-react";
 import { toast } from "sonner";
 import { Toaster } from "sonner";
 import StreakTracker from "@/components/StreakTracker";
+import { Link } from "react-router-dom";
 
 const Rewards = () => {
   const [user] = useState(mockUser);
@@ -85,17 +86,24 @@ const Rewards = () => {
                   {user.xp}/{user.maxXp}
                 </div>
               </Progress>
-            </div>
-          </div>
-          
-          <div className="mb-6 bg-white rounded-xl p-4 shadow-sm">
-            <div className="flex items-center gap-2">
-              <Flame className="text-orange-500" size={20} />
-              <span className="font-semibold">{user.streak} Week Streak</span>
+              
+              <div className="text-sm text-gray-600 mt-2">
+                <p>Earn XP by completing activities in your courses:</p>
+                <Link to="/courses" className="flex items-center gap-2 text-red-900 hover:underline font-medium mt-1">
+                  Go to Courses <ArrowRight size={16} />
+                </Link>
+              </div>
             </div>
           </div>
           
           <div className="mb-6">
+            <StreakTracker streakCount={user.streak} />
+            <div className="text-sm text-gray-600 mt-2">
+              <p>Keep your streak going by completing at least one activity per week!</p>
+            </div>
+          </div>
+          
+          <div className="mb-6 bg-white rounded-xl p-4 border border-gray-100">
             <h3 className="font-bold text-xl mb-3">Badges</h3>
             <div className="grid grid-cols-2 gap-3">
               {mockRewards.map((reward) => (
@@ -116,14 +124,23 @@ const Rewards = () => {
                 </div>
               ))}
             </div>
+            
+            <div className="text-center mt-4">
+              <Link to="/badges" className="flex items-center justify-center gap-2 text-red-900 hover:underline font-medium">
+                View All Badges <ArrowRight size={16} />
+              </Link>
+            </div>
           </div>
           
           <div>
             <h3 className="font-bold text-xl mb-3">Rewards</h3>
             <div className="space-y-4">
               {rewards.map((reward) => (
-                <div key={reward.id} className="flex justify-between items-center">
-                  <div className="font-semibold">${reward.cost/100} Starbucks Gift Card</div>
+                <div key={reward.id} className="flex justify-between items-center p-3 bg-gray-50 rounded-lg">
+                  <div>
+                    <div className="font-semibold">${reward.cost/100} Starbucks Gift Card</div>
+                    <div className="text-xs text-gray-600">Cost: {reward.cost} XP</div>
+                  </div>
                   {reward.redeemed ? (
                     <span className="bg-red-900 text-white px-3 py-1 rounded-md text-sm">
                       Redeemed
